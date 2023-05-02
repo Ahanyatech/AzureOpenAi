@@ -29,7 +29,24 @@ jobs:
         with:
           # Specify the script here
           inlineScript: |
-            az resource show -g ${{secrets.rg}} --resource-type "Microsoft.CognitiveServices/accounts" -n ${{secrets.srvcname}}
+            az group create --name ${{secrets.rg}} --location name ${{secrets.location}} 
+            
+            az cognitiveservices account create \
+              -n ${{secrets.srvcname}} \
+              -g ${{secrets.rg}} \
+              -l ${{secrets.location}} \
+              --kind OpenAI \
+              --sku s0 \
+              --subscription ${{secrets.subscription}}
+            
+            az cognitiveservices account deployment create \
+            -g ${{secrets.rg}} \
+            -n ${{secrets.srvcname}} \
+              --deployment-name MyModel \
+              --model-name ${{secrets.modelname}} \
+              --model-version "1"  \
+              --model-format OpenAI \
+              --scale-settings-scale-type "Standard"
           
           
 
