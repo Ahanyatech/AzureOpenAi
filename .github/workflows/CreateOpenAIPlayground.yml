@@ -29,7 +29,10 @@ jobs:
         with:
           # Specify the script here
           inlineScript: |
-            az group create --name ${{secrets.rg}} --location name ${{secrets.location}} 
+          
+            az group create \
+              --name ${{secrets.rg}} \
+              --location ${{secrets.location}} 
             
             az cognitiveservices account create \
               -n ${{secrets.srvcname}} \
